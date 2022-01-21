@@ -9,17 +9,9 @@ function traverse(rules) {
         typeof rule.options.modules.getLocalIdent === "function"
       ) {
         const nextGetLocalIdent = rule.options.modules.getLocalIdent;
-        rule.options.modules.mode = "local";
-        rule.options.modules.auto = true;
-        rule.options.modules.exportGlobals = true;
-        rule.options.modules.exportOnlyLocals = false;
-        rule.options.modules.getLocalIdent = (
-          context,
-          _,
-          exportName,
-          options
-        ) => {
-          if (context.resourcePath.includes(LINARIA_EXTENSION)) {
+        rule.options.modules.mode = (resourcePath) => resourcePath.endsWith(LINARIA_EXTENSION) ? "local" : "pure"
+        rule.options.modules.getLocalIdent = (context,_,exportName,options) => {
+          if (context.resourcePath.endsWith(LINARIA_EXTENSION)) {
             return exportName;
           }
           return nextGetLocalIdent(context, _, exportName, options);
