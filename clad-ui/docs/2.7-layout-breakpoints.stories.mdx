@@ -1,0 +1,185 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta
+  title="Style Guide/Layout/Breakpoints"
+  parameters={{ previewTabs: { canvas: { hidden: true } } }}
+/>
+
+# Breakpoints
+
+Breakpoints are predefined widths in theme object that determine how responsive layout behaves across device or viewport sizes in Clad UI.
+
+## Core concepts
+
+- **Breakpoints are part of the design tokens** defined in theme specification. They can be overriden or customized in custom theme object.
+- **Mobile first, responsive design is the goal**. Media queries must use `min-width` to apply the bare minimum of styles to make a layout work at the smallest breakpoint, and then layers on styles to adjust that design for larger devices.
+- **Breakpoints-aware components uses [array props](https://styled-system.com/guides/array-props/)** as universal API for responsive design.
+
+## Available Breakpoints
+
+We use the same scale name with [Bootstrap breakpoints class infix](https://getbootstrap.com/docs/5.0/layout/breakpoints/) and dimensions for easy reference and association.
+
+| Breakpoint        | Array Prop Index | Scale Name | Dimensions |
+| ----------------- | ---------------- | ---------- | ---------- |
+| Extra Small       | [0]              | None       | <576px     |
+| Small             | [1]              | **sm**     | ≥576px     |
+| Medium            | [2]              | **md**     | ≥768px     |
+| Large             | [3]              | **lg**     | ≥992px     |
+| Extra large       | [4]              | **xl**     | ≥1200px    |
+| Extra extra large | [5]              | **xxl**    | ≥1400px    |
+
+## Design Tokens
+
+These breakpoints can be referred from design tokens (theme objects) using both Array index and Clad UI scale naming:
+
+```
+theme.breakpoints.[ 0 | 1 | 2 | 3 | 4 ]
+
+theme.breakpoints.[ sm | md | lg | xl | xxl ]
+```
+
+**Note:** Indexed breakpoints starts from the first media query (`theme.breakpoints[0] = '576px'` ) and it is **not consistent** with array prop indices. Therefore, avoid using theme breakpoints indices, and use scale names (`sm`, `md`, `lg`...) instead. Besides current breakpoints step by name is identical with Bootstrap's counter parts.
+
+## Media Queries
+
+Write explicit media queries with theme's breakpoints:
+
+```js
+import theme from '@clad-ui/theme';
+
+const { breakpoints } = theme;
+
+const StyledCol = styled.div`
+  font-size: ${theme.fontSizes.sm};
+  padding: ${theme.space.md};
+
+  @media (min-width: ${breakpoints.sm}) {
+    font-size: ${theme.fontSizes.md};
+    padding: ${theme.space.lg};
+  }
+
+  @media (min-width: ${breakpoints.md}) {
+    padding: ${theme.space.xl};
+  }
+`
+```
+
+### Chotot Media Query Aliases
+
+Theme object `mediaQueries` key add some shortcuts to the full media query line and is specific to different systems. Currently, Chotot web design system only concern 2 major breakpoints: msite (phone, no-prefix) and "desktop" (actually tablet and up, `md`). So we added following media query shortcuts to the `mediaQueries` theme key:
+
+```js
+import theme from '@clad-ui/theme';
+
+const { mediaQueries } = theme;
+
+const StyledCol = styled.div`
+  /* direct rules are for msite */
+  font-size: ${theme.fontSizes.sm};
+  padding: ${theme.space.md};
+
+  /* for so-called "desktop" */
+  @media ${mediaQueries.tablet} {
+    font-size: ${theme.fontSizes.md};
+    padding: ${theme.space.lg};
+  }
+
+  /* for actual desktop */
+  @media ${mediaQueries.desktop} {
+    font-size: ${theme.fontSizes.md};
+    padding: ${theme.space.lg};
+  }
+`
+```
+
+> Note: since `mediaQueries` is derived (but immutable) from `breakpoints`, we avoid using `mediaQueries` within Clad UI components since developers might customize `breakpoints` and forget to sync `mediaQueries`.
+
+## Responsive Props
+
+Clad UI components uses [array props](https://styled-system.com/guides/array-props/) API for responsive configuration.
+
+```jsx
+// Set the value for each breakpoints in the array prop
+<Grid rowCols=[
+  1,    // 1 column below the smallest breakpoint (default)
+  2,    // 2 columns from the small breakpoint and up
+  null, // skipped, so reuse 2 columns for the medium breakpoint
+  3,    // 3 columns from the large breakpoint and up
+]
+/>
+// NOTE: to skip a breakpoint, use `null` or repeated value
+
+// Responsive padding from default, small and medium breakpoints
+<Box padding=["sm", "md", "lg"] />
+
+// Use same padding for all breakpoints
+<Box padding="md" />
+
+```
+
+
+## The case of iPhone 5 (≤320px).
+
+There are some rare cases in which we found a layout / visual bug with small phone screen size (most commonly, it is iPhone 5 and below). Since these cases are not common, we'll add some custom classes and styles (with `max-width` media query) to fix them instead of adding a responsive breakpoint step globally.
+
+```js
+import theme from '@clad-ui/theme';
+
+const { mediaQueries } = theme;
+
+const MyComponent = styled.div`
+  /* style for common phone and up (>320px) */
+  font-size: ${theme.fontSizes.sm};
+
+  /* for iPhone 5 and below */
+  @media (max-width: 320px) {
+    font-size: ${theme.fontSizes.xs};
+  }
+
+  /* OR use Chotot theme mediaQueries alias */
+  @media ${mediaQueries.ip5} {
+    font-size: ${theme.fontSizes.xs};
+  }
+`
+```
+
+## Customize Breakpoints
+
+In case you want to customize the breakpoints, make sure you define values for both array index and properties of the `breakpoints` key:
+
+```js
+// in the project local theme's alias (usually src/theme/index.js)
+import theme from 'clad-ui/theme/chotot';
+
+// for example: tweaking the small and medium breakpoints
+const breakpoints = ['320px', '576px', '992px', '1200px', '1400px'];
+
+// define the named breakpoints based on the array
+[breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints.xxl] = breakpoints;
+
+const appTheme = {
+  ...theme,
+  breakpoints,
+  mediaQueries: {
+    // redefine mediaQueries if necessary
+  }
+}
+
+export default appTheme;
+```
+
+## The getBreakpointsValues helper
+
+To generate the values for each breakpoints in styled-system conveniently, Clad-UI provides `getBreakpointsValues` helper function that generates **an array with 5 elements** from a number or another array with less than 5 elements.
+
+```js
+import { getBreakpointsValues } from 'clad-ui/utils';
+
+getBreakpointsValues(4, 'initial'); // [4, 4, 4, 4, 4]
+getBreakpointsValues([2, null, 4], 'initial'); // [2, 2, 4, 4, 4]
+getBreakpointsValues([], 'initial'); // ['initial', 'initial', 'initial', 'initial', 'initial']
+```
+
+## Other media query helpers
+
+Bootstrap 5 has more media query helpers such as `media-breakpoint-down` (desktop-first),  `media-breakpoint-only`, and `media-breakpoint-between`. However, **we don't support these helpers for now** and discourage writing plain media queries trying those approaches as they are against mobile-first principles (unless there are circumstances using them will help with CSS parsing performance).

@@ -1,0 +1,180 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import theme from '@clad-ui/theme';
+import Square from '../storybook/components/Square';
+import Bar from '../storybook/components/Bar';
+import BorderRadius from '../storybook/components/BorderRadius';
+import BorderWidth from '../storybook/components/BorderWidth';
+import Shadow from '../storybook/components/Shadow';
+import Gradient from '../storybook/components/Gradient';
+import Transition from '../storybook/components/Transition';
+
+<Meta
+  title="Style Guide/Sizes & Scales"
+  parameters={{ previewTabs: { canvas: { hidden: true } } }}
+/>
+
+<Story name="Scale Naming" />
+
+## Scale Naming
+
+When it comes to name the different sizes and weights in scales, we'll use following naming convention:
+
+- ...
+- **xxs**
+- **xs** (extra small)
+- **sm** (small)
+- **md** (medium)
+- **lg** (large)
+- **xl** (extra large)
+- **xxl**
+- **xxxl**
+- ...
+
+## Spacing
+
+```
+theme.space.[ none | xxxs | xxs | xs | sm | md | lg | xl | xxl | xxxl | xxxxl | xxxxxl ];
+```
+
+Use spacings for gutters, margins, and paddings. Don't use it for border width, border radius, icon size, font size, or line height. Use the dedicated theme properties instead.
+
+<Canvas>
+  <Story name="Spacing">
+    <Square size="xxxs" />
+    <Square size="xxs" />
+    <Square size="xs" />
+    <Square size="sm" />
+    <Square size="md" />
+    <Square size="lg" />
+    <Square size="xl" />
+    <Square size="xxl" />
+    <Square size="xxxl" />
+    <Square size="xxxxl" />
+    <Square size="xxxxxl" />
+  </Story>
+</Canvas>
+
+## Sizes
+
+```
+// absolute scale steps
+theme.sizes.[ xxxs | xxs | xs | sm | md | lg | xl | xxl | xxxl | xxxxl | xxxxxl | buttonMaxWidth | $sm | $md | $lg | $xl ]
+
+// percentage and relative to screen size
+theme.sizes.[ quarter | third | half | twoThird | threeQuarter | full | vW | vH ];
+```
+
+Use sizes for width, height, min-width, max-width, min-height and max-height.
+
+<Canvas>
+  <Story name="Sizes">
+    <Bar size="xxxs" />
+    <Bar size="xxs" />
+    <Bar size="xs" />
+    <Bar size="sm" />
+    <Bar size="md" />
+    <Bar size="lg" />
+    <Bar size="xl" />
+    <Bar size="xxl" />
+    <Bar size="xxxl" />
+    <Bar size="xxxxl" />
+    <Bar size="xxxxxl" />
+    <Bar size="buttonMaxWidth" />
+    <Bar size="$sm" />
+    <Bar size="$md" />
+    <Bar size="$lg" />
+    <Bar size="$xl" />
+    <Bar size="quarter" />
+    <Bar size="third" />
+    <Bar size="half" />
+    <Bar size="twoThird" />
+    <Bar size="threeQuarter" />
+    <Bar size="full" />
+    <Bar size="vW" />
+    <Bar size="vH" />
+  </Story>
+</Canvas>
+
+## Line / Border Widths
+
+```
+theme.borderWidths.[ none | sm | md | lg | xl ];
+```
+
+<Canvas>
+  <Story name="Border Widths">
+    <BorderWidth size="none" />
+    <BorderWidth size="sm" />
+    <BorderWidth size="md" />
+    <BorderWidth size="lg" />
+    <BorderWidth size="xl" />
+  </Story>
+</Canvas>
+
+## Border Radius
+
+```
+theme.radii.[ none | xs | sm | md | lg | xl | pill | circle ];
+```
+
+<Canvas>
+  <Story name="Border Radius">
+    <BorderRadius size="none" desc="No border radius" />
+    <BorderRadius size="xs" desc="Used for images, thumbnails" />
+    <BorderRadius size="sm" desc="Used for buttons" />
+    <BorderRadius size="md" desc="This step is unused" />
+    <BorderRadius size="lg" desc="This step is unused" />
+    <BorderRadius size="xl" desc="Used for C2C home page category thumbnails" />
+    <BorderRadius size="pill" desc="Used for pill buttons" />
+    <BorderRadius size="circle" desc="Used for icons, circle icon buttons" />
+  </Story>
+</Canvas>
+
+## Shadows
+
+```
+theme.shadows.[ none | md | lg ];
+```
+
+<Canvas>
+  <Story name="Shadows">
+    <Shadow size="none" />
+    <Shadow size="md" />
+    <Shadow size="lg" />
+  </Story>
+</Canvas>
+
+## Gradients
+
+```
+theme.gradient.[ toDark | toLight ];
+```
+
+<Canvas>
+  <Story name="Gradients">
+    <Gradient name="toDark" />
+    <Gradient name="toLight" darkBG />
+  </Story>
+</Canvas>
+
+## Durations
+
+```js
+theme.durations.[ xxxs | xxs | xs | sm | md | lg | xl | xxl | xxxl | xxxxl ];
+```
+**Note**: `duration` is not (yet) a standard System UI Theme Specification, therefore, it will not work with `sx()` helper. (Access the tokens via `theme` object instead).
+
+<Canvas>
+  <Story name="Durations">
+    <Transition duration="xxxs" />
+    <Transition duration="xxs" />
+    <Transition duration="xs" />
+    <Transition duration="sm" />
+    <Transition duration="md" />
+    <Transition duration="lg" />
+    <Transition duration="xl" />
+    <Transition duration="xxl" />
+    <Transition duration="xxxl" />
+    <Transition duration="xxxxl" />
+  </Story>
+</Canvas>

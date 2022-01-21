@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import theme from '@clad-ui/theme';
+import jsonStringify from '../storybook/utils/jsonStringify';
+
+<Meta title="Style Guide/Intro" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+# What are Tokens?
+
+> From: https://design.workday.com/tokens
+
+Tokens are the smallest pieces of our Design System. Their primary function is to store UI information that allows for building components and patterns at a sustainable scale while securing consistency across our platforms.
+
+Based on this definition, 2 key metrics help us understand and define tokens:
+
+1. A token is an immutable element that requires a well-defined and justified adoption and/or modification process.
+
+2. A token is the raw material or tool we use to build more complex elements like components and patterns.
+
+## Tokens and Theme Specification
+
+Clad UI design tokens are defined in a format so-called [System UI Theme Specification](https://system-ui.com/theme/). The theme is a JavaScript object with conventional theme keys that store design system style values, scales and other primitive design tokens.
+
+See [full extract of Chotot's theme object](#current-chotot-theme-object) below.
+
+## Theme Key Reference
+
+The following is a list of theme object keys and their corresponding CSS properties.
+This list may be non-exhaustive.
+
+| Theme Key        | CSS Properties                                                                                                                                                                                     |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `space`          | `margin`, `margin-top`, `margin-right`, `margin-bottom`, `margin-left`, `padding`, `padding-top`, `padding-right`, `padding-bottom`, `padding-left`, `grid-gap`, `grid-column-gap`, `grid-row-gap` |
+| `fontSizes`      | `font-size`                                                                                                                                                                                        |
+| `colors`         | `color`, `background-color`, `border-color`                                                                                                                                                        |
+| `fonts`          | `font-family`                                                                                                                                                                                      |
+| `fontWeights`    | `font-weight`                                                                                                                                                                                      |
+| `lineHeights`    | `line-height`                                                                                                                                                                                      |
+| `letterSpacings` | `letter-spacing`                                                                                                                                                                                   |
+| `sizes`          | `width`, `height`, `min-width`, `max-width`, `min-height`, `max-height`                                                                                                                            |
+| `borders`        | `border`, `border-top`, `border-right`, `border-bottom`, `border-left`                                                                                                                             |
+| `borderWidths`   | `border-width`                                                                                                                                                                                     |
+| `borderStyles`   | `border-style`                                                                                                                                                                                     |
+| `radii`          | `border-radius`                                                                                                                                                                                    |
+| `shadows`        | `box-shadow`, `text-shadow`                                                                                                                                                                        |
+| `zIndices`       | `z-index`
+
+## Current Chotot Theme Object
+
+Below is the static extract of Chotot's theme object which will be explained and illustrated in the next sections:
+
+<code language="json">{'theme = ' + jsonStringify(theme, 2, ['shadows'])}</code>

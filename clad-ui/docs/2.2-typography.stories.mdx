@@ -1,0 +1,126 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import Type  from '../storybook/components/Type';
+import theme from '@clad-ui/theme';
+
+<Meta title="Style Guide/Typography" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+# Typography
+
+Typography tokens are defined in following theme's fields:
+
+- `theme.fonts`: Font stack
+- `theme.fontSizes`: Font sizes
+- `theme.fontWeights`: Font weights
+- `theme.lineHeights`: Line heights
+
+```js
+import { styled } from 'linaria/react';
+import theme from '@clad-ui/theme';
+
+const Heading1 = styled.h1`
+  font-size: ${theme.fontSizes.h1};
+  font-weight: ${theme.fontWeights.bold};
+  color: ${theme.colors.text};
+`;
+```
+
+## Font stack
+
+```
+theme.fonts.[body|heading|monospace]
+```
+
+Current font stack:
+
+<Canvas>
+  <Story name="Font Stacks">
+    <Type as="p" font="body" fontWeight="normal" fontSize="body" lineHeight="md"><strong>Body:</strong> {theme.fonts.body.replace(/,\s?/g, ', ')}</Type>
+    <Type as="p" font="heading" fontWeight="normal" fontSize="body" lineHeight="md"><strong>Heading:</strong> {theme.fonts.heading.replace(/,\s?/g, ', ')}</Type>
+    <Type as="p" font="monospace" fontWeight="normal" fontSize="body" lineHeight="md"><strong>Monospace:</strong> {theme.fonts.monospace.replace(/,\s?/g, ', ')}</Type>
+  </Story>
+</Canvas>
+
+Note that we don't use **monospace** anywhere yet in Chotot.com
+
+## Font sizes
+
+```
+theme.fontSizes.[xxs | xs | sm | md | lg | xl | xxl | xxxl ];
+// aliases:
+theme.fontSizes.[    body | h6 | h5 | h4 | h3 | h2  | h1   ];
+```
+
+<Canvas>
+  <Story name="Font Sizes">
+    <Type as="p" fontWeight="" fontSize="xxs" lineHeight="md">xxs. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+    <Type as="p" fontWeight="" fontSize="xs" lineHeight="md">xs. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+    <Type as="p" fontWeight="" fontSize="sm" lineHeight="md">sm. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+    <Type as="p" fontWeight="" fontSize="md" lineHeight="md">md. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+    <Type as="p" fontWeight="" fontSize="lg" lineHeight="md">lg. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+    <Type as="p" fontWeight="" fontSize="xl" lineHeight="md">xl. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+    <Type as="p" fontWeight="" fontSize="xxl" lineHeight="md">xxl. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+    <Type as="p" fontWeight="" fontSize="xxxl" lineHeight="md">xxxl. Bầu trời trong xanh thăm thẳm, không một gợn mây.</Type>
+  </Story>
+</Canvas>
+
+> Legend: Sample Text | Font Weight | Font Size | Line Height
+
+### Headings
+
+<Canvas>
+  <Story name="Headings">
+    <Type as="h1" fontWeight="bold" fontSize="h1" lineHeight="md">h1. This is Heading 1</Type>
+    <Type as="h2" fontWeight="bold" fontSize="h2" lineHeight="md">h2. This is Heading 2</Type>
+    <Type as="h3" fontWeight="bold" fontSize="h3" lineHeight="md">h3. This is Heading 3</Type>
+    <Type as="h4" fontWeight="bold" fontSize="h4" lineHeight="md">h4. This is Heading 4</Type>
+    <Type as="h5" fontWeight="bold" fontSize="h5" lineHeight="md">h5. This is Heading 5</Type>
+    <Type as="h6" fontWeight="bold" fontSize="h6" lineHeight="md">h6. This is Heading 6</Type>
+  </Story>
+</Canvas>
+
+> Legend: Sample Text | Font Weight | Font Size | Line Height
+
+### Body Text
+
+<Canvas>
+  <Story name="Text">
+    <Type as="p" fontSize="body" lineHeight="md">Lorem ipsum dolor sit amet, consectetur adipisicing elit. <strong>Molestiae reiciendis</strong> labore eos placeat <em>tenetur dolor magnam ratione</em> ex officiis consectetur similique, assumenda eum natus asperiores corrupti, esse quia. Maxime, consequuntur!</Type>
+  </Story>
+</Canvas>
+
+## Font weight
+
+```
+theme.fontWeights.[normal|bold]
+// semantic
+theme.fontWeights.[body|heading]
+```
+
+
+<Canvas>
+  <Story name="Font Weight">
+    <Type as="p" fontWeight="bold" fontSize="body" lineHeight="md">bold</Type>
+    <Type as="p" fontWeight="normal" fontSize="body" lineHeight="md">normal</Type>
+    <Type as="p" fontWeight="heading" fontSize="body" lineHeight="md">heading</Type>
+    <Type as="p" fontWeight="body" fontSize="body" lineHeight="md">body</Type>
+  </Story>
+</Canvas>
+
+## Line heights
+
+```
+theme.lineHeights[[ 0 | 1 | 2 | 3 | 4 | 5]];
+```
+
+<Canvas>
+  <Story name="Line Heights">
+    <Type as="div" fontWeight="normal" fontSize="body" lineHeight="xs">This is line height [xs]</Type>
+    <Type as="div" fontWeight="normal" fontSize="body" lineHeight="sm">This is line height [sm]</Type>
+    <Type as="div" fontWeight="normal" fontSize="body" lineHeight="md">This is line height [md]</Type>
+    <Type as="div" fontWeight="normal" fontSize="body" lineHeight="lg">This is line height [lg]</Type>
+    <Type as="div" fontWeight="normal" fontSize="body" lineHeight="xl">This is line height [xl]</Type>
+    <Type as="div" fontWeight="normal" fontSize="body" lineHeight="xxl">This is line height [xxl]</Type>
+  </Story>
+</Canvas>
+
+> Legend: Sample Text | Font Weight | Font Size | Line Height

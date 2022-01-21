@@ -1,0 +1,193 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Overview/Theming" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+# Building new screens with Clad UI
+
+Clad UI uses the so-called [System UI Theme Specification](https://system-ui.com/theme/) as the standard format for design tokens. It is simple, well documented and has a [JS function helper](https://styled-system.com/css) to generate Linaria's consumable style object for `styled` and `css` tagged template functions.
+
+## Configuring the theme
+
+Since we use **Linaria** and final product is static CSS, theming is done during compile time. To do this, we'll make use of [Babel's module aliases](https://github.com/tleunen/babel-plugin-module-resolver).
+
+```bash
+# install this babel plugin as devDependencies
+yarn add --dev babel-plugin-module-resolver
+```
+
+In `babel.config.js`:
+
+```js
+{
+  /* ... */
+  plugins: [
+    [
+      'module-resolver',
+      {
+        root: ['.'],
+        alias: {
+          // point this special module name to your theme entry
+          '@clad-ui/theme': ['./src/theme/index.js'],
+          // If you only want to use the theme directly, configure it like so
+          '@clad-ui/theme': ['clad-ui/theme'], // default to 'chotot'
+        },
+      },
+    ],
+  ]
+};
+```
+
+Use everything from base theme in `src/theme/index.js`
+
+```js
+// forward default export
+export { default } from 'clad-ui/theme/chotot';
+```
+
+## Overriding the theme
+
+In your `src/theme/index.js`, extends from the base theme like so:
+
+```js
+import theme from 'clad-ui/theme/chotot';
+
+// clone and override
+const appTheme = {
+  ...theme,
+  // override spacing
+  space: [0, 4, 8, 16, 32, 64, 128, 256],
+  // override some colors
+  colors: {
+    ...theme.colors,
+    primary: '#D0021B',
+    critical: theme.colors.red3,
+  }
+}
+
+export default appTheme;
+```
+
+## Use the theme tokens
+
+In your `Component.js`, use the theme tokens like so:
+
+```js
+import { css } from 'linaria';
+import theme from '@clad-ui/theme';
+
+// get the theme object's values in template string placeholders
+const componentClass = css`
+  margin: ${theme.space.md};
+  padding: ${theme.space.xs};
+  background-color: ${theme.colors.accent};
+  display: flex;
+  align-items: center;
+`;
+```
+
+## The `sx` theme helper
+
+Clad UI provides a theme-aware helper `sx` function that is based on [@styled-system/css](https://styled-system.com/css/). With this, styles can be done with JS objects where keys can be **regular camel-cased CSS properties** or **theming key aliases** where their values are direct reference from theme object.
+
+
+```js
+import { css } from 'linaria';
+// internally sx also import theme from @clad-ui/theme
+import { sx } from 'clad-ui/utils';
+
+// use the sx theme helper
+const componentClass = css`
+  ${sx({
+    m: 5,
+    p: 3,
+    bg: 'accent',
+  })}
+  display: flex;
+  align-items: center;
+`;
+```
+
+### Theme Keys
+
+The following are object-based CSS properties and aliases with their equivalent keys from theme object:
+
+Property  | Theme Key
+---|---
+`fontFamily` | `fonts`
+`fontSize` | `fontSizes`
+`fontWeight` | `fontWeights`
+`lineHeight` | `lineHeights`
+`letterSpacing` | `letterSpacings`
+`color` | `colors`
+`backgroundColor`, `bg` | `colors`
+`margin`, `m` | `space`
+`marginTop`, `mt` | `space`
+`marginRight`, `mr` | `space`
+`marginBottom`, `mb` | `space`
+`marginLeft`, `ml` | `space`
+`marginX`, `mx` | `space`
+`marginY`, `my` | `space`
+`padding`, `p` | `space`
+`paddingTop`, `pt` | `space`
+`paddingRight`, `pr` | `space`
+`paddingBottom`, `pb` | `space`
+`paddingLeft`, `pl` | `space`
+`paddingX`, `px` | `space`
+`paddingY`, `py` | `space`
+`top` | `space`
+`bottom` | `space`
+`left` | `space`
+`right` | `space`
+`border` | `borders`
+`borderTop` | `borders`
+`borderRight` | `borders`
+`borderBottom` | `borders`
+`borderLeft` | `borders`
+`borderColor` | `colors`
+`borderWidth` | `borderWidths`
+`borderStyle` | `borderStyles`
+`borderRadius` | `radii`
+`boxShadow` | `shadows`
+`textShadow` | `shadows`
+`zIndex` | `zIndices`
+`width` | `sizes`
+`minWidth` | `sizes`
+`maxWidth` | `sizes`
+`height` | `sizes`
+`minHeight` | `sizes`
+`maxHeight` | `sizes`
+`size` (`width` & `height`) | `sizes`
+
+> From: https://styled-system.com/css/#theme-keys
+
+## Babel module-resolver plugin and ESLint import plugin
+
+We're using [ESLint import plugin](https://github.com/benmosher/eslint-plugin-import) to help early check invalid imports. It will send false errors for module imports that are remapped with babel-plugin-module-resolver. To make ESLint correctly validate module aliases, we need to install this additional npm package `eslint-import-resolver-babel-module` and configure `.eslintrc` like so:
+
+```js
+{
+  "root": true,
+  // eslint-plugin-import is configured in eslint-preset-chotot
+  "extends": ["chotot"],
+  "settings": {
+    // module resolver settings for eslint-plugin-import
+    "import/resolver": {
+      // letting the import plugin use eslint-import-resolver-babel-module
+      // and automatically read the module remapping from babel config
+      "babel-module": {}
+    }
+  }
+}
+```
+
+If we use TypeScript or `tsc` for type checking (there is a `jsconfig.json` or `tsconfig.json` in project's root folder), an additional module mapping should be added to `[jt]sconfig.json` file at `compilerOptions.paths`:
+
+```json
+{
+  "compilerOptions": {
+    /* ... */
+    "paths": {
+      "@clad-ui/theme": ["./src/theme/index.js"]
+    }
+}
+```

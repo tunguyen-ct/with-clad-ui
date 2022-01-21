@@ -1,0 +1,64 @@
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+import Icons from '../storybook/components/Icons';
+import ShapedIcon from '../components/ShapeIcon/ShapeIcon';
+import Location from '../icons/Location';
+
+<Meta title="Style Guide/Iconography" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+<Story name="Intro" />
+
+# Iconography
+
+Clad UI icon is a React component that wrap an inline SVG.
+
+The inline SVG has attributes of `width="1em" height="1em"`, that means it will inherit from parent's font size or you can change its size by specifying CSS `font-size` property.
+
+Clad UI icons are classified into 2 types of icons: **monochrome** and **color**. With **monochrome** icons, developer can specify its color with the CSS **color** property.
+
+To add new icon, refer to [Icon Development Guide](#icon-development-guide) below.
+
+If you wish to have icons framed with circle <ShapedIcon bg="primary" color="white" radius="circle" size="sm"><Location /></ShapedIcon>
+or rounded square <ShapedIcon bg="primary" color="white" radius="sm" size="sm"><Location /></ShapedIcon>, check out [ShapeIcon component](?path=/docs/components-shapeicon--overview)
+
+```jsx
+import { sx } from 'clad-ui/utils';
+import { Download } from 'clad-ui/icons';
+
+const buttonClass = css`
+  ${sx({
+    color: 'primary',
+    fontSize: 'sm',
+  })}
+`;
+
+export default function DownloadButton() {
+  return (
+    <button className={buttonClass}>
+      <Download /> Download
+    </button>
+  )
+}
+
+```
+
+## Collections
+
+<Story name="Collections">
+  <Icons />
+</Story>
+
+# Icon Development Guide
+
+<Story name="Development Guide" />
+
+Steps to add a new icon to the collection:
+
+1. Extract or receive the icon from designer in SVG format.
+2. Use [SVGOMG](https://jakearchibald.github.io/svgomg/) to optimize the markups of the icon
+3. Store it in `assets/icons` folder, and name it properly with snake case format. (Icon's name is unique in clad-ui's icon collection)
+4. Modify icon mark up with additional metadata:
+    - Classify icon as `monochrome` or `color` and supplement `data-type` attribute to the `<svg>` tag.
+      Example: `<svg data-type="monochrome" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">`
+    - For monochrome icons, normalize the fill/stroke color of the icon with **#222** or **currentColor** value. (`#222` will be replaced with `currentColor` during SVG-to-React compilation).
+    - For the icon to be normalized and scaled with **font-size**, replace SVG's `width` and `height` (if any) with `viewBox`
+5. Execute following npm script `yarn build:icons` from terminal. Under the hood, npx will fetch and execute the [**svgr**](https://react-svgr.com/) CLI to convert all svg in `assets/icons` folder to `icons` as React components.

@@ -1,0 +1,124 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import Swatch from '../storybook/components/Swatch';
+
+<Meta title="Style Guide/Colors" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+# Colors
+
+It is encouraged to use **semantic** color names instead of the primitive tokens. Please help expand the **semantic colors** where they make sense.
+
+```js
+import { css } from 'linaria';
+import { sx } from 'clad-ui/utils';
+import theme from '@clad-ui/theme';
+
+// destructured object shortcuts
+const { colors } = theme;
+
+const buttonStyle = css`
+  background-color: ${colors.accent};
+`;
+
+// theme-aware helper
+const swatchStyle = css`
+  ${sx({
+    color: 'text',
+  })}
+`;
+```
+
+## Semantic colors
+
+<!-- TODO: Find a way to extract jsdoc from theme's properties and use as description -->
+
+### UI
+<Swatch colorName="primary" description="Primary brand color for links, buttons, etc." />
+<Swatch colorName="accent" description="A contrast color for emphasizing UI" />
+<Swatch colorName="secondary" description="A secondary brand color for alternative styling" />
+<Swatch colorName="muted" description="A faint color for backgrounds, borders, and accents that do not require high contrast with the background color" />
+
+### Informative
+
+<Swatch colorName="critical" description="Super important. You need to see this." />
+<Swatch colorName="caution" description="You should be aware something is happening or mid-way through a process. Could be a risk or an item that needs to be acted upon." />
+<Swatch colorName="info" description="Guidance & advice. Generally from the UI or business. Functional, calm and non urgent." />
+<Swatch colorName="positive" description="Good vibes & new things! Wants to get the user to act on something or be aware something good happened." />
+<Swatch colorName="neutral" description="Subtle information or details historic in nature. Often already actioned & in the past. No priority required due to the lack of importance or change." />
+
+### Text & content
+
+<Swatch colorName="text" description="Main body text color" />
+<Swatch colorName="textLighter" description="De-emphasized / footer text color" />
+<Swatch colorName="link" description="Regular hyperlinks color" />
+<Swatch colorName="linkActive" description="Regular hyperlinks hover / active color" />
+<Swatch colorName="line" description="Color for lines, borders" />
+<Swatch colorName="background" description="Body background color" />
+<Swatch colorName="highlight" description="A background color for highlighting text" />
+
+## Full Color Pallete
+
+For each color tone, the main color should be **#2** (e.g. **red2**, **orange2**, **yellow2**, etc...). **#1** are usually for pressed down state, **#3** for hover states and **#4, #5** for backgrounds...
+
+### Neutrals
+
+<Swatch colorName="black" />
+<Swatch colorName="gray1" />
+<Swatch colorName="gray2" />
+<Swatch colorName="gray3" />
+<Swatch colorName="gray4" />
+<Swatch colorName="gray5" />
+<Swatch colorName="white" />
+
+### Reds
+
+<Swatch colorName="red1" />
+<Swatch colorName="red2" />
+<Swatch colorName="red3" />
+<Swatch colorName="red4" />
+<Swatch colorName="red5" />
+
+### Oranges
+
+<Swatch colorName="orange1" />
+<Swatch colorName="orange2" />
+<Swatch colorName="orange3" />
+<Swatch colorName="orange4" />
+<Swatch colorName="orange5" />
+
+### Yellows
+
+<Swatch colorName="yellow1" />
+<Swatch colorName="yellow2" />
+<Swatch colorName="yellow3" />
+<Swatch colorName="yellow4" />
+<Swatch colorName="yellow5" />
+
+### Greens
+
+<Swatch colorName="green1" />
+<Swatch colorName="green2" />
+<Swatch colorName="green3" />
+<Swatch colorName="green4" />
+<Swatch colorName="green5" />
+
+### Teals
+
+<Swatch colorName="teal1" />
+<Swatch colorName="teal2" />
+<Swatch colorName="teal3" />
+<Swatch colorName="teal4" />
+
+### Blues
+
+<Swatch colorName="blue1" />
+<Swatch colorName="blue2" />
+<Swatch colorName="blue3" />
+<Swatch colorName="blue4" />
+<Swatch colorName="blue5" />
+
+### DarkBlues
+
+<Swatch colorName="darkblue1" />
+<Swatch colorName="darkblue2" />
+<Swatch colorName="darkblue3" />
+<Swatch colorName="darkblue4" />

@@ -1,0 +1,138 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import Grid from '../components/Grid/Grid';
+import Col from '../components/Grid/Col';
+import Box from '../components/Box/Box';
+import Member from '../storybook/components/Member';
+
+<Meta title="Overview/Meet the team" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+# Meet the Team
+
+Clad UI was designed and built by these passionate people at Chợ Tốt.
+
+<Box paddingy={['md', 'lg']}>
+  <Grid rowCols={[1, 1, 2]} gutterx={[null, null, 'xl']} guttery={['lg', 'lg', 'xl']} padd>
+    <Col>
+      <Member
+        avatar="./team-members/anhtruong.jpg"
+        name="Anh Truong"
+        position="UI/UX Lead"
+        role="Lead the creation and communication of design decisions, support the design system to help grow our platform, and drive impact for Cho Tot."
+        web="https://www.linkedin.com/in/helloanhtruong/"
+        email="anhtruong@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/thanhtran.jpg"
+        name="Thanh Tran"
+        position="Principle Software Engineer"
+        role="Design Clad UI technical solutions and lead the implementation of Clad UI design system."
+        web="https://int3ractive.com"
+        email="thanhtran@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/trinhhuynh.jpg"
+        name="Trinh Huynh"
+        position="UX Researcher"
+        role="Explore and research for understanding user insights in order to improve and develop the product."
+        email="trinhhuynh@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/tutran.jpg"
+        name="Tu Tran"
+        position="UI/UX Designer"
+        role="Unify components across platforms, centralize, create specs and documentation."
+        web="https://ginnytran.wixsite.com/portfolio"
+        email="tutran@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/linhnguyen.jpg"
+        name="Linh Nguyen"
+        position="UI/UX Designer"
+        role="Define and design. Refine and reuse. Contributing to the design guidelines, UI library, usage explanation. Ensure Clad UI be used in Product design."
+        web="https://www.behance.net/lilomo"
+        email="linhnguyen@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/phuphan.jpg"
+        name="Phu Phan"
+        position="UI/UX Designer"
+        role="Contribute to Design System, create guidelines and reusable components accross platforms."
+        web="https://www.behance.net/Mandubu"
+        email="phuphan@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/tanpham.jpg"
+        name="Tan Pham"
+        position="Front End Intern"
+        role="Implement Clad UI design system components as well as documentation."
+        web="https://www.linkedin.com/in/tanpham199/"
+        email="tanpham@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/phunguyen.jpg"
+        name="Phu Nguyen"
+        position="Front End Engineer"
+        role="Contribute from Buyer Workgroup."
+        web="https://www.linkedin.com/in/PhuNguyenIT96/"
+        email="phunguyen@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/anle.jpg"
+        name="An Le"
+        position="Front End Engineer"
+        role="Contribute from Customer Workgroup."
+        web="https://www.linkedin.com/in/lehoangthienan/"
+        email="anle@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/toanle.jpg"
+        name="Toan Le"
+        position="Front End Engineer"
+        role="Contribute from Seller Workgroup."
+        web="https://www.linkedin.com/in/toanleviet95/"
+        email="toanle@chotot.vn"
+      />
+    </Col>
+    <Col>
+      <Member
+        avatar="./team-members/khoado.jpg"
+        name="Khoa Do"
+        position="Front End Engineer"
+        role="Contribute from Foundation Workgroup."
+        web=""
+        email="khoado@chotot.vn"
+      />
+    </Col>
+
+  </Grid>
+</Box>
+
+## How we collaborate
+
+There isn't a dedicated team for Chotot Design System and Clad UI. Rather, the people involved come from various workgroups and contribute using their domain know-how.
+
+<Box maxWidth={['full', null, 'half']} style={{margin: 'auto'}}><img src="./how-we-build.png" alt="How we build illustration" /></Box>
+
+## How we work
+
+Here's a digram depict how new features and new components are handled through out the process.
+
+<Box maxWidth={['full', null, 'half']} style={{margin: 'auto'}}><img src="./ds-workflow.svg" alt="Design system workflow diagram" /></Box>

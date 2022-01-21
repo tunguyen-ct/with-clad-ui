@@ -1,0 +1,439 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Style Guide/Baseline CSS" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+# Baseline CSS
+
+## Usage
+
+Baseline CSS uses Linaria's unscoped global styles so we can import it as side effect:
+
+```js
+// in the entry component (app.js, _app.js...)
+import 'clad-ui/css/baseline';
+```
+
+> **Note:** baseline CSS module may be treeshaked from bundle because of its side effect nature. We have marked side effect modules in clad-ui's `package.json` and it should fix this issue with Webpack 4+. If you have this issue with other bundler, import the module as if it is pure dependent module like so:
+> ```js
+> import baselineCSS from 'clad-ui/css/baseline';
+console.log(baselineCSS); // make bundler's parser see it being used to be included in bundle.
+> ```
+
+
+## Approach
+
+Clad UI Baseline CSS is based on [Bootstrap's Reboot](https://getbootstrap.com/docs/5.0/content/reboot/), providing many HTML elements with somewhat opinionated styles using only **element selectors**. This serves as both cross-browser CSS normalization and decent default styles for HTML documents that match Clad UI design system.
+
+Here are our guidelines and reasons for choosing what to override in Clad UI Baseline CSS:
+
+- Update some browser default values to use `rem`s instead of `em`s for scalable component spacing.
+- Avoid `margin-top`. Vertical margins can collapse, yielding unexpected results. More importantly though, a single direction of `margin` is a simpler mental model.
+- For easier scaling across device sizes, block elements should use `rem`s for `margin`s.
+- Keep declarations of `font`-related properties to a minimum, using `inherit` whenever possible.
+
+## Page defaults
+
+The `<html>` and `<body>` elements are updated to provide better page-wide defaults. More specifically:
+
+- The `box-sizing` is globally set on every element—including `*::before` and `*::after`, to `border-box`. This ensures that the declared width of element is never exceeded due to padding or border.
+- No base `font-size` is declared on the `<html>`, but `16px` is assumed (the browser default). `font-size: ${theme.fontSizes.body}` is applied on the `<body>` for easy responsive type-scaling via media queries while respecting user preferences and ensuring a more accessible approach. This browser default can be overridden by modifying the `fontSizes.body` theme key.
+- The `<body>` also sets a global `font-family`, `font-weight`, `line-height`, and `color`. This is inherited later by some form elements to prevent font inconsistencies.
+
+## Font stack
+
+Clad UI Baseline CSS utilizes a "native font stack" or "system font stack" for optimum text rendering and somewhat consistent on every device and OS.
+
+```css
+body {
+  font-family:
+    Helvetica,  /* macOS & iOS */
+    Arial,      /* Windows */
+    Roboto,     /* Android */
+    sans-serif; /* Sans serif fallback & Linux */
+}
+```
+
+This `font-family` is applied to the `<body>` and automatically inherited globally throughout Baseline CSS. To switch the global `font-family`, update `theme.fonts.body` in theme object overrides.
+
+## Headings and paragraphs
+
+All heading elements—e.g., `<h1>`—and `<p>` are reset to have their `margin-top` removed. Headings and paragraphs have `margin-bottom` added with theme's `space` tokens for easy spacing.
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Heading</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        &lt;h1>&lt;/h1>
+      </td>
+      <td><h1>h1. Baseline heading</h1></td>
+    </tr>
+    <tr>
+      <td>
+        &lt;h2>&lt;/h2>
+      </td>
+      <td><h2>h2. Baseline heading</h2></td>
+    </tr>
+    <tr>
+      <td>
+        &lt;h3>&lt;/h3>
+      </td>
+      <td><h3>h3. Baseline heading</h3></td>
+    </tr>
+    <tr>
+      <td>
+        &lt;h4>&lt;/h4>
+      </td>
+      <td><h4>h4. Baseline heading</h4></td>
+    </tr>
+    <tr>
+      <td>
+        &lt;h5>&lt;/h5>
+      </td>
+      <td><h5>h5. Baseline heading</h5></td>
+    </tr>
+    <tr>
+      <td>
+        &lt;h6>&lt;/h6>
+      </td>
+      <td><h6>h6. Baseline heading</h6></td>
+    </tr>
+  </tbody>
+</table>
+
+## Lists
+
+All lists—`<ul>`, `<ol>`, and `<dl>`—have their `margin-top` removed and a `margin-bottom: 1rem`. Nested lists have no `margin-bottom`. We've also reset the `padding-left` on `<ul>` and `<ol>` elements.
+
+<div class="baseline-example">
+  <ul>
+    <li>All lists have their top margin removed</li>
+    <li>And their bottom margin normalized</li>
+    <li>Nested lists have no bottom margin
+      <li>This way they have a more even appearance</li>
+      <li>Particularly when followed by more list items</li>
+    </li>
+    <li>The left padding has also been reset</li>
+  </ul>
+
+  <ol>
+    <li>Here's an ordered list</li>
+    <li>With a few list items</li>
+    <li>It has the same overall look</li>
+    <li>As the previous unordered list</li>
+  </ol>
+</div>
+
+For simpler styling, clear hierarchy, and better spacing, description lists have updated `margin`s. `<dd>`s reset `margin-left` to `0` and add `margin-bottom: .5rem`. `<dt>`s are **bolded**.
+
+<div class="baseline-example">
+  <dl>
+    <dt>Description lists</dt>
+    <dd>A description list is perfect for defining terms.</dd>
+    <dt>Term</dt>
+    <dd>Definition for the term.</dd>
+    <dd>A second definition for the same term.</dd>
+    <dt>Another term</dt>
+    <dd>Definition for this other term.</dd>
+  </dl>
+</div>
+
+## Inline code
+
+Wrap inline snippets of code with `<code>`. Be sure to escape HTML angle brackets.
+
+<div class="baseline-example">
+  For example, <code>&lt;section&gt;</code> should be wrapped as inline.
+</div>
+
+```html
+  For example, <code>&lt;section&gt;</code> should be wrapped as inline.
+```
+
+## Code blocks
+
+Use `<pre>`s for multiple lines of code. Once again, be sure to escape any angle brackets in the code for proper rendering. The `<pre>` element is reset to remove its `margin-top` and use `rem` units for its `margin-bottom`.
+
+
+<div class="baseline-example">
+  <pre><code>
+  &lt;p&gt;Sample text here...&lt;/p&gt;<br/>
+  &lt;p&gt;And another line of sample text here...&lt;/p&gt;
+  </code></pre>
+</div>
+
+```html
+<pre><code>
+  &lt;p&gt;Sample text here...&lt;/p&gt;
+  &lt;p&gt;And another line of sample text here...&lt;/p&gt;
+</code></pre>
+```
+
+## User input
+
+Use the `<kbd>` to indicate input that is typically entered via keyboard.
+
+<div class="baseline-example">
+To switch directories, type <kbd>cd</kbd> followed by the name of the directory.<br/>
+To edit settings, press <kbd><kbd>ctrl</kbd> + <kbd>,</kbd></kbd>
+</div>
+
+```html
+To switch directories, type <kbd>cd</kbd> followed by the name of the directory.<br/>
+To edit settings, press <kbd><kbd>ctrl</kbd> + <kbd>,</kbd></kbd>
+```
+
+## Sample output
+
+For indicating sample output from a program use the `<samp>` tag.
+
+<div class="baseline-example">
+<samp>This text is meant to be treated as sample output from a computer program.</samp>
+</div>
+
+```html
+<samp>This text is meant to be treated as sample output from a computer program.</samp>
+```
+
+## Tables
+
+Tables are slightly adjusted to style `<caption>`s, collapse borders, and ensure consistent `text-align` throughout.
+
+<div class="baseline-example">
+  <table>
+    <caption>
+      This is an example table, and this is its caption to describe the contents.
+    </caption>
+    <thead>
+      <tr>
+        <th>Table heading</th>
+        <th>Table heading</th>
+        <th>Table heading</th>
+        <th>Table heading</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+      </tr>
+      <tr>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+      </tr>
+      <tr>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Forms
+
+Various form elements have been rebooted for simpler base styles. Here are some of the most notable changes:
+
+- `<fieldset>`s have no borders, padding, or margin so they can be easily used as wrappers for individual inputs or groups of inputs.
+- `<legend>`s, like fieldsets, have also been restyled to be displayed as a heading of sorts.
+- `<label>`s are set to `display: inline-block` to allow `margin` to be applied.
+- `<input>`s, `<select>`s, `<textarea>`s, and `<button>`s are mostly addressed by Normalize, but Reboot removes their `margin` and sets `line-height: inherit`, too.
+- `<textarea>`s are modified to only be resizable vertically as horizontal resizing often "breaks" page layout.
+- `<button>`s and `<input>` button elements have `cursor: pointer` when `:not(:disabled)`.
+
+These changes, and more, are demonstrated below.
+
+<form class="baseline-example">
+  <fieldset>
+    <legend>Example legend</legend>
+    <p>
+      <label for="input">Example input</label>&nbsp;
+      <input type="text" id="input" placeholder="Example input"/>
+    </p>
+    <p>
+      <label for="email">Example email</label>&nbsp;
+      <input type="email" id="email" placeholder="test@example.com"/>
+    </p>
+    <p>
+      <label for="tel">Example telephone</label>&nbsp;
+      <input type="tel" id="tel"/>
+    </p>
+    <p>
+      <label for="url">Example url</label>&nbsp;
+      <input type="url" id="url"/>
+    </p>
+    <p>
+      <label for="number">Example number</label>&nbsp;
+      <input type="number" id="number"/>
+    </p>
+    <p>
+      <label for="search">Example search</label>&nbsp;
+      <input type="search" id="search"/>
+    </p>
+    <p>
+      <label for="range">Example range</label>&nbsp;
+      <input type="range" id="range" min="0" max="10"/>
+    </p>
+    <p>
+      <label for="file">Example file input</label>&nbsp;
+      <input type="file" id="file"/>
+    </p>
+    <p>
+      <label for="select">Example select</label>&nbsp;
+      <select id="select">
+        <option value="">Choose...</option>
+        <optgroup label="Option group 1">
+          <option value="">Option 1</option>
+          <option value="">Option 2</option>
+          <option value="">Option 3</option>
+        </optgroup>
+        <optgroup label="Option group 2">
+          <option value="">Option 4</option>
+          <option value="">Option 5</option>
+          <option value="">Option 6</option>
+        </optgroup>
+      </select>
+    </p>
+    <p>
+      <label>
+        <input type="checkbox" value="" />&nbsp;
+        Check this checkbox
+      </label>
+    </p>
+    <p>
+      <label>
+        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked />&nbsp;
+        Option one is this and that
+      </label>
+      <label>
+        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" />&nbsp;
+        Option two is something else that's also super long to demonstrate the wrapping of these fancy form controls.
+      </label>
+      <label>
+        <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled />&nbsp;
+        Option three is disabled
+      </label>
+    </p>
+    <p>
+      <label for="textarea">Example textarea</label>&nbsp;
+      <textarea id="textarea" rows="3"></textarea>
+    </p>
+    <p>
+      <label for="date">Example date</label>&nbsp;
+      <input type="date" id="date" />
+    </p>
+    <p>
+      <label for="time">Example time</label>&nbsp;
+      <input type="time" id="time" />
+    </p>
+    <p>
+      <label for="password">Example password</label>&nbsp;
+      <input type="password" id="password" />
+    </p>
+    <p>
+      <label for="datetime-local">Example datetime-local</label>&nbsp;
+      <input type="datetime-local" id="datetime-local" />
+    </p>
+    <p>
+      <label for="week">Example week</label>&nbsp;
+      <input type="week" id="week" />
+    </p>
+    <p>
+      <label for="month">Example month</label>&nbsp;
+      <input type="month" id="month" />
+    </p>
+    <p>
+      <label for="color">Example color</label>&nbsp;
+      <input type="color" id="color" />
+    </p>
+    <p>
+      <label for="output">Example output</label>&nbsp;
+      <output name="result" id="output">100</output>
+    </p>
+    <p>
+      <button type="submit">Button submit</button>&nbsp;
+      <input type="submit" value="Input submit button" />&nbsp;
+      <input type="reset" value="Input reset button" />&nbsp;
+      <input type="button" value="Input button" />
+    </p>
+    <p>
+      <button type="submit" disabled>Button submit</button>&nbsp;
+      <input type="submit" value="Input submit button" disabled />&nbsp;
+      <input type="reset" value="Input reset button" disabled />&nbsp;
+      <input type="button" value="Input button" disabled />
+    </p>
+  </fieldset>
+</form>
+
+## Misc elements
+
+### Address
+
+The `<address>` element is updated to reset the browser default `font-style` from `italic` to `normal`. `line-height` is also now inherited, and `margin-bottom: 1rem` has been added. `<address>`s are for presenting contact information for the nearest ancestor (or an entire body of work). Preserve formatting by ending lines with `<br/>`.
+
+<div class="baseline-example">
+  <address>
+    <strong>Twitter, Inc.</strong><br/>
+    1355 Market St, Suite 900<br/>
+    San Francisco, CA 94103<br/>
+    <abbr title="Phone">P:</abbr> (123) 456-7890
+  </address>
+
+  <address>
+    <strong>Full Name</strong><br/>
+    <a href="mailto:first.last@example.com">first.last@example.com</a>
+  </address>
+</div>
+
+### Blockquote
+
+The default `margin` on blockquotes is `1em 40px`, so we reset that to `0 0 1rem` for something more consistent with other elements.
+
+<div class="baseline-example">
+  <blockquote class="blockquote">
+    <p>A well-known quote, contained in a blockquote element.</p>
+  </blockquote>
+  <p>Someone famous in <cite title="Source Title">Source Title</cite></p>
+</div>
+
+### Inline elements
+
+The `<abbr>` element receives basic styling to make it stand out amongst paragraph text.
+
+<div class="baseline-example">
+  Nulla <abbr title="attribute">attr</abbr> vitae elit libero, a pharetra augue.
+</div>
+
+### Summary
+
+The default `cursor` on summary is `text`, so we reset that to `pointer` to convey that the element can be interacted with by clicking on it.
+
+<div class="baseline-example">
+  <details>
+    <summary>Some details</summary>
+    <p>More info about the details.</p>
+  </details>
+
+  <details open>
+    <summary>Even more details</summary>
+    <p>Here are even more details about the details.</p>
+  </details>
+</div>
+
+## HTML5 `[hidden]` attribute
+
+HTML5 adds [a new global attribute named `[hidden]`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden), which is styled as `display: none` by default. Borrowing an idea from [PureCSS](https://purecss.io/), we improve upon this default by making `[hidden] { display: none !important; }` to help prevent its `display` from getting accidentally overridden.
+
+```html
+<input type="text" hidden>
+```

@@ -1,0 +1,111 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Overview/Getting Started" parameters={{ previewTabs: { canvas: { hidden: true } } }} />
+
+# Getting Started
+
+## Install
+
+```bash
+# Install dependencies
+yarn add clad-ui@latest linaria@^1.4.0 react-laag@^2.0.2
+# Install dev dependencies (if not yet)
+yarn add --dev babel-plugin-module-resolver
+```
+
+In `babel.config.js`, append `linaria/babel` to list of presets:
+
+```js
+{
+  presets: [
+    '@babel/preset-env', 
+    '@babel/preset-react', 
+    'linaria/babel'
+  ]
+}
+```
+
+## Use
+
+```jsx
+// import a component
+import { Button } from 'clad-ui';
+// import an icon
+import { Location } from 'clad-ui/icons';
+// import sx helper
+import { sx } from 'clad-ui/utils';
+// import baseline css (applied globally)
+import 'clad-ui/css/baseline';
+// import default theme (see Theming document)
+import theme from '@clad-ui/theme';
+// import styling helpers
+import { css } from 'linaria';
+import { styled } from 'linaria/react';
+```
+
+## Getting Started with clad-ui Development
+
+#### `yarn install`
+
+Install dependencies and bootstrap development environment
+
+#### `yarn start`
+
+Start storybook dev server to preview components during authoring and implementation
+
+#### `yarn build`
+
+Generate type definitions (we don't compile our source and leave as ES modules)
+
+#### `yarn build:storybook`
+
+Build Storybook to a static website
+
+#### `yarn bump`
+
+Increase version and generate change log based on conventional commits
+
+#### `yarn release`
+
+Publish `clad-ui` to internal npm registry.
+
+## Migrate from Styled Component / Emotion
+
+If you are familiar with Styled Component or Emotion, here's a quick migration guide:
+
+```diff
+- import styled from 'styled-components';
++ import { styled } from 'linaria/react';
+- import { withTheme } from 'styled-components';
++ import theme from '@clad-ui/theme';
+
+  import PropTypes from 'prop-types';
+
+  const MyComponent = styled.header`
+    /* dynamic style from prop as usual */
+    color: ${props => props.color};
+    border: 2px solid ${props => props.color};
+
+    /* theme is now imported as module */
+-   background: ${props => props.theme.colors.background};
++   background: ${theme.colors.background};
+
+    span {
+      font-family: Helvetica, Arial, sans-serif !important;
+    }
+  `;
+
+  MyComponent.propTypes = {
+    color: PropTypes.string,
+  };
+
+- export default withTheme(MyComponent);
++ export default MyComponent;
+```
+
+
+## Resources
+
+- [Linaria Documentation](https://github.com/callstack/linaria/tree/master/docs)
+- [System UI Theme Specs](https://theme-ui.com/theme-spec/)
+
