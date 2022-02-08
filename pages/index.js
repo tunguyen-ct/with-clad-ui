@@ -1,6 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Button, Input, Box } from "clad-ui";
+// import Button from "clad-ui/components/Button/Button";
+// import Input from "clad-ui/components/Input/Input";
+// import Box from "clad-ui/components/Box/Box";
+import { Button, Input, Box} from 'clad-ui'
 import styles from "../styles/Home.module.css";
 
 export default function Home() {

@@ -20,6 +20,22 @@ const plugins = [
       },
     },
   ],
+  [
+    'babel-plugin-import',
+    {
+      libraryName: 'clad-ui',
+      customName: (name) => {
+        const components = ['Button', 'Input', 'Box'];
+        if (components.includes(name)) {
+          return `clad-ui/components/${name}/${name}`;
+        }
+        return name
+      },
+      libraryDirectory: '',
+      camel2DashComponentName: false,
+    },
+    'clad-ui',
+  ],
 ]
 
 module.exports = function (api) {
